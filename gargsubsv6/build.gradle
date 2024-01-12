@@ -1,0 +1,58 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        namespace "com.garg.billingsubv6"
+        minSdk 21
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    def billing_version = "6.1.0"
+    implementation "com.android.billingclient:billing:$billing_version"
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.github.Nitro2000'
+            artifactId = 'gargsubsv6'
+            version = '1.0.0'
+
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url = uri("https://jitpack.io")
+        }
+    }
+}
